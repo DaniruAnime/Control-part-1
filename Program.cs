@@ -21,7 +21,7 @@ namespace QuadraticEquation
 
         public MainForm()
         {
-            Text = "Quadratic Equation Solver";
+            Text = "Квадратное уравнение";
             Size = new Size(760, 600);
             MinimumSize = new Size(680, 520);
 
@@ -32,236 +32,155 @@ namespace QuadraticEquation
             CreateInterface();
         }
 
+        
         private void CreateInterface()
         {
-            // Классическое меню Windows
-
-            MainMenu mainMenu = new MainMenu();
-
-            MenuItem fileMenu = new MenuItem("&Файл");
-
-            MenuItem clearItem = new MenuItem("&Очистить");
-            MenuItem exitItem = new MenuItem("&Выход");
-
-            clearItem.Click += delegate
-            {
-                ClearFields();
-            };
-
-            exitItem.Click += delegate
-            {
-                Close();
-            };
-
-            fileMenu.MenuItems.Add(clearItem);
-            fileMenu.MenuItems.Add("-");
-            fileMenu.MenuItems.Add(exitItem);
-
-            MenuItem helpMenu = new MenuItem("&Справка");
-
-            helpMenu.MenuItems.Add(
-                new MenuItem("&О программе", delegate
-                {
-                    MessageBox.Show(
-                        "Quadratic Equation Solver 2.0\n\n" +
-                        "Программа для решения квадратных уравнений.\n\n" +
-                        "Вычисление дискриминанта.\n" +
-                        "Нахождение корней.\n" +
-                        "Проверка теоремы Виета.\n\n" +
-                        "C# / Windows Forms / Mono",
-                        "О программе",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-                })
-            );
-
-            mainMenu.MenuItems.Add(fileMenu);
-            mainMenu.MenuItems.Add(helpMenu);
-
-            Menu = mainMenu;
-
             // Основная область
-
             Panel mainPanel = new Panel();
-
+        
             mainPanel.Dock = DockStyle.Fill;
             mainPanel.Padding = new Padding(12);
-
+        
             Controls.Add(mainPanel);
-
-            // Заголовок
-
-            Label title = new Label();
-
-            title.Text = "Quadratic Equation Solver";
-            title.Font = new Font(
-                "Arial", 16, FontStyle.Bold
-            );
-
-            title.Location = new Point(15, 10);
-            title.Size = new Size(500, 30);
-
-            mainPanel.Controls.Add(title);
-
-            Label subtitle = new Label();
-
-            subtitle.Text = "Решение квадратных уравнений";
-            subtitle.ForeColor = SystemColors.GrayText;
-
-            subtitle.Location = new Point(17, 43);
-            subtitle.Size = new Size(400, 20);
-
-            mainPanel.Controls.Add(subtitle);
-
-            // Группа ввода
-
+        
+            // Группа ввода коэффициентов
             GroupBox inputGroup = new GroupBox();
-
+        
             inputGroup.Text = "Ввод коэффициентов";
-            inputGroup.Location = new Point(10, 75);
+            inputGroup.Location = new Point(10, 15);
             inputGroup.Size = new Size(700, 130);
-
+        
             inputGroup.Anchor =
                 AnchorStyles.Top |
                 AnchorStyles.Left |
                 AnchorStyles.Right;
-
+        
             mainPanel.Controls.Add(inputGroup);
-
+        
             Label formula = new Label();
-
+        
             formula.Text = "ax² + bx + c = 0";
             formula.Font = new Font(
                 "Arial", 12, FontStyle.Bold
             );
-
+        
             formula.Location = new Point(20, 25);
             formula.Size = new Size(200, 25);
-
+        
             inputGroup.Controls.Add(formula);
-
+        
             txtA = CreateInput(inputGroup, "A:", "1", 65);
             txtB = CreateInput(inputGroup, "B:", "-5", 255);
             txtC = CreateInput(inputGroup, "C:", "6", 445);
-
+        
             // Кнопка вычисления
-
             Button calculateButton = new Button();
-
+        
             calculateButton.Text = "Вычислить";
             calculateButton.Location = new Point(565, 50);
             calculateButton.Size = new Size(115, 30);
-
+        
             calculateButton.Anchor =
                 AnchorStyles.Top |
                 AnchorStyles.Right;
-
+        
             calculateButton.Click += delegate
             {
                 CalculateEquation();
             };
-
+        
             inputGroup.Controls.Add(calculateButton);
-
+        
+            // Кнопка очистки
             Button clearButton = new Button();
-
+        
             clearButton.Text = "Очистить";
             clearButton.Location = new Point(565, 85);
             clearButton.Size = new Size(115, 30);
-
+        
             clearButton.Anchor =
                 AnchorStyles.Top |
                 AnchorStyles.Right;
-
+        
             clearButton.Click += delegate
             {
                 ClearFields();
             };
-
+        
             inputGroup.Controls.Add(clearButton);
-
+        
             AcceptButton = calculateButton;
-
-            // Группа результатов
-
+        
+            // Результаты вычислений
             GroupBox resultGroup = new GroupBox();
-
+        
             resultGroup.Text = "Результаты вычислений";
-            resultGroup.Location = new Point(10, 215);
+            resultGroup.Location = new Point(10, 155);
             resultGroup.Size = new Size(700, 140);
-
+        
             resultGroup.Anchor =
                 AnchorStyles.Top |
                 AnchorStyles.Left |
                 AnchorStyles.Right;
-
+        
             mainPanel.Controls.Add(resultGroup);
-
+        
             lblDiscriminant = CreateResultLabel(
                 resultGroup,
                 "Дискриминант: --",
-                25,
-                670,
-                25
+                25, 670, 25
             );
-
+        
             lblRoots = CreateResultLabel(
                 resultGroup,
                 "Корни: --",
-                55,
-                670,
-                50
+                55, 670, 50
             );
-
+        
             lblEquation = CreateResultLabel(
                 resultGroup,
                 "Уравнение: --",
-                110,
-                670,
-                25
+                110, 670, 25
             );
-
-            // Группа теоремы Виета
-
+        
+            // Теорема Виета
             GroupBox vietaGroup = new GroupBox();
-
+        
             vietaGroup.Text = "Проверка теоремы Виета";
-            vietaGroup.Location = new Point(10, 365);
+            vietaGroup.Location = new Point(10, 305);
             vietaGroup.Size = new Size(700, 160);
-
+        
             vietaGroup.Anchor =
                 AnchorStyles.Top |
                 AnchorStyles.Bottom |
                 AnchorStyles.Left |
                 AnchorStyles.Right;
-
+        
             mainPanel.Controls.Add(vietaGroup);
-
+        
             lblVieta = new Label();
-
+        
             lblVieta.Text = "Ожидание вычислений...";
             lblVieta.Location = new Point(15, 25);
             lblVieta.Size = new Size(665, 125);
-
+        
             lblVieta.Anchor =
                 AnchorStyles.Top |
                 AnchorStyles.Bottom |
                 AnchorStyles.Left |
                 AnchorStyles.Right;
-
+        
             vietaGroup.Controls.Add(lblVieta);
-
+        
             // Строка состояния
-
             status = new StatusBar();
-
+        
             status.Text = "Готово";
-
+            status.Dock = DockStyle.Bottom;
+        
             Controls.Add(status);
-
+        
             // Первоначальный расчёт
-
             CalculateEquation();
         }
 
