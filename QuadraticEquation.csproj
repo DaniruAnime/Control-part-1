@@ -35,7 +35,6 @@
 
   <ItemGroup>
     <Compile Include="Program.cs" />
-    <Compile Include="GraphPanel.cs" />
   </ItemGroup>
 
   <Import Project="$(MSBuildBinPath)/Microsoft.CSharp.targets" />
